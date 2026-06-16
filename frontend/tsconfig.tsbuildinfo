@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/api.ts","./src/main.tsx","./src/types.ts","./src/vite-env.d.ts","./src/components/approvalbox.tsx","./src/components/header.tsx","./src/components/resultbox.tsx","./src/components/tracepanel.tsx","./src/pages/home.tsx","./src/pages/workflow.tsx"],"version":"5.9.3"}
