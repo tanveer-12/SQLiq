@@ -15,16 +15,32 @@ from app.api.routes import router as sqliq_router
 
 
 class _InjectDashboardKey(BaseHTTPMiddleware):
-    """Pre-seed the dashboard's localStorage key so no modal appears on first open."""
+    """Pre-seed the dashboard localStorage key and fix auto-refresh behaviour."""
 
     async def dispatch(self, request: Request, call_next):
         if request.url.path == "/dashboard" and request.method == "GET":
             key = (os.getenv("AGENTSTATE_API_KEYS", "dev-key-123")
                    .split(",")[0].strip() or "dev-key-123")
-            seed_script = (
-                f'<script>try{{localStorage.setItem("agentstate_key","{key}")}}catch(e){{}}</script>'
+            # Injected before </head> so it runs before the dashboard's own script:
+            # 1. Seed the API key so the login modal is skipped.
+            # 2. Wrap window.setInterval to extend the 5-second poll to 30 seconds
+            #    and skip re-renders entirely while the approval modal is open.
+            head_script = (
+                "<script>"
+                f'try{{localStorage.setItem("agentstate_key","{key}")}}catch(e){{}};'
+                "(function(){"
+                "var _si=window.setInterval;"
+                "window.setInterval=function(fn,d){"
+                "return _si(function(){"
+                "var m=document.getElementById('approval-modal');"
+                "if(m&&m.classList.contains('visible'))return;"
+                "fn();"
+                "},30000);"
+                "};"
+                "})();"
+                "</script>"
             )
-            patched = DASHBOARD_HTML.replace("</head>", seed_script + "</head>", 1)
+            patched = DASHBOARD_HTML.replace("</head>", head_script + "</head>", 1)
             return HTMLResponse(patched)
         return await call_next(request)
 

@@ -98,3 +98,8 @@ Thumbs.db
 
 *.db
 frontend/dist/
+sqlib.db
+app/api/__pycache__/
+app/api/*.pyc
+app/api/*.pyo
+app/api/*.pyd
