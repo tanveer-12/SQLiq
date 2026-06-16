@@ -15,6 +15,7 @@ ENV/
 
 docs/SQLIQ_IMPLEMENTATION.md
 
+sqliq.egg-info/
 
 # Distribution / Packaging
 build/
