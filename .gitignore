@@ -3,6 +3,7 @@
 # =========================
 
 __pycache__/
+app/__pycache__/
 *.py[cod]
 *$py.class
 
@@ -11,6 +12,9 @@ venv/
 .venv/
 env/
 ENV/
+
+docs/SQLIQ_IMPLEMENTATION.md
+
 
 # Distribution / Packaging
 build/
