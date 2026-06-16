@@ -5,7 +5,7 @@ description = "Bidirectional SQL intelligence powered by agentstatelib"
 requires-python = ">=3.11"
 
 dependencies = [
-    "agentstate-lib[api,dashboard]>=0.5.0",
+    "agentstate-lib[api,dashboard]>=0.5.1",
     "openai>=1.30",
     "python-dotenv>=1.0",
 ]
