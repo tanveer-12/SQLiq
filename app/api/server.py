@@ -3,12 +3,30 @@ from __future__ import annotations
 
 import os
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.base import BaseHTTPMiddleware
 
 from agentstatelib.api import create_app as create_library_app
+from agentstatelib.api.dashboard import DASHBOARD_HTML
 
 from app.api.routes import router as sqliq_router
+
+
+class _InjectDashboardKey(BaseHTTPMiddleware):
+    """Pre-seed the dashboard's localStorage key so no modal appears on first open."""
+
+    async def dispatch(self, request: Request, call_next):
+        if request.url.path == "/dashboard" and request.method == "GET":
+            key = (os.getenv("AGENTSTATE_API_KEYS", "dev-key-123")
+                   .split(",")[0].strip() or "dev-key-123")
+            seed_script = (
+                f'<script>try{{localStorage.setItem("agentstate_key","{key}")}}catch(e){{}}</script>'
+            )
+            patched = DASHBOARD_HTML.replace("</head>", seed_script + "</head>", 1)
+            return HTMLResponse(patched)
+        return await call_next(request)
 
 
 def create_app() -> FastAPI:
@@ -21,6 +39,7 @@ def create_app() -> FastAPI:
     #   GET       /v1/workflows/{id}/turns
     #   GET       /dashboard             (library's built-in trace dashboard)
     app = create_library_app(db_path=db_path)
+    app.add_middleware(_InjectDashboardKey)
 
     # Add SQLiq-specific routes (/api/run, /api/result/{id}, /api/approve/{id})
     app.include_router(sqliq_router)
