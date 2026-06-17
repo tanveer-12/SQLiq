@@ -1,17 +1,31 @@
 # SQLiq — SQL Intelligence
 
-> **Prototype notice:** SQLiq is a demo application built to showcase [agentstatelib](https://github.com/tanveer-12/agentstate), a Python library for building observable, multi-agent AI systems. The goal is to show, end-to-end, what agentstatelib enables: real-time agent tracing, shared state across agents, human approval gates, conflict resolution, and a live dashboard — all in a production-shaped project.
+> **Prototype notice:** SQLiq is a demo application built to showcase [agentstatelib](https://github.com/tanveer-12/agentstate), a Python library for building observable, multi-agent AI systems. The goal is to show, end-to-end, what agentstatelib enables: real-time agent tracing, shared state across agents, human approval gates, conflict resolution, and a live dashboard - all in a production-shaped project.
+
+Show some love to : [agentstatelib](https://github.com/tanveer-12/agentstate), I have been solo developing it, but would really love some constructive feedback on how to make it more robust !!
 
 ---
 
-<!-- REPLACE THIS LINE WITH A SCREENSHOT OF THE WEB UI -->
+## LIVE URL (try it out): [sqliq-web-ui](https://sqliq.onrender.com/ui)
+
+---
+Web UI 
+
 ![Web UI screenshot](docs/assets/ui-screenshot.png)
 
+---
+Youtube Demo Video
+---
 <!-- REPLACE THIS LINE WITH A GIF OF A FULL WORKFLOW (NL → SQL, trace panel, approval gate) -->
-![Demo GIF](docs/assets/demo.gif)
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=9FNspFpIBdY">
+    <img src="https://i.ytimg.com/vi/9FNspFpIBdY/maxresdefault.jpg" alt="Watch SQLiq Demo" width="750">
+    <br>
+    <span style="font-size: 20px;">▶️ Watch on YouTube</span>
+  </a>
+</div>
 
 ---
-
 ## What it does
 
 SQLiq translates between **natural language and SQL** in both directions:
