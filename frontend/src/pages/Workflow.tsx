@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import TracePanel from '../components/TracePanel'
 import ApprovalBox from '../components/ApprovalBox'
@@ -34,6 +34,7 @@ function StatusBar({ status }: { status: PageStatus }) {
 
 export default function Workflow() {
   const [params]    = useSearchParams()
+  const navigate    = useNavigate()
   const wfId        = params.get('id')
   const [status,    setStatus]    = useState<PageStatus>('running')
   const [result,    setResult]    = useState<WorkflowResult | null>(null)
@@ -84,6 +85,12 @@ export default function Workflow() {
       <>
         <Header />
         <main className="max-w-6xl mx-auto px-6 mt-6">
+          <button
+            onClick={() => navigate('/')}
+            className="text-[13px] text-muted hover:text-text flex items-center gap-1 mb-4 transition-colors"
+          >
+            ← Back to Home
+          </button>
           <p className="text-muted">No workflow ID in URL.</p>
         </main>
       </>
@@ -95,6 +102,17 @@ export default function Workflow() {
       <Header tagline={modeLabel} />
       <main className="max-w-6xl mx-auto px-6 mt-6 grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6 items-start">
         <section>
+          <div className="flex items-center gap-3 mb-4">
+            <button
+              onClick={() => navigate('/')}
+              className="text-[13px] text-muted hover:text-text flex items-center gap-1 transition-colors"
+            >
+              ← Home
+            </button>
+            <span className="text-border select-none">·</span>
+            <span className="text-[13px] text-muted">{modeLabel}</span>
+          </div>
+
           <StatusBar status={status} />
 
           {status === 'awaiting_approval' && result?.pending_approval && (
@@ -106,6 +124,15 @@ export default function Workflow() {
 
           {status === 'complete' && result && (
             <ResultBox result={result} />
+          )}
+
+          {status === 'complete' && (
+            <button
+              onClick={() => navigate('/')}
+              className="mt-5 w-full bg-code-bg border border-border text-[14px] font-medium rounded-[8px] px-5 py-3 hover:bg-border transition-colors flex items-center justify-center gap-2"
+            >
+              ← Try another conversion
+            </button>
           )}
         </section>
 

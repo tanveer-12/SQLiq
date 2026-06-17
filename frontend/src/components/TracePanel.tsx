@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { getApiKey } from '../api'
 import type { TraceEvent } from '../types'
 
 interface TraceItem {
@@ -63,11 +64,9 @@ export default function TracePanel({ workflowId, onApprovalRequested, onComplete
   const [stats,  setStats]  = useState({ tokens: 0, calls: 0, retries: 0 })
   const startTs  = useRef(Date.now())
   const bottomRef = useRef<HTMLDivElement>(null)
-  // Key read from env — never hardcoded. Set VITE_AGENTSTATE_API_KEY in .env
-  const API_KEY  = import.meta.env.VITE_AGENTSTATE_API_KEY ?? 'dev-key-123'
 
   useEffect(() => {
-    const sse = new EventSource(`/v1/workflows/${workflowId}/events?key=${API_KEY}`)
+    const sse = new EventSource(`/v1/workflows/${workflowId}/events?key=${getApiKey()}`)
     let tokens = 0, calls = 0, retries = 0
 
     function addItem(color: TraceItem['color'], text: string) {

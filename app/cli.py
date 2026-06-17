@@ -140,14 +140,14 @@ async def main() -> None:
     _banner()
 
     # ── Mode selection ────────────────────────────────────────────────────────
+    console.print("  [bold]1[/bold]  NL → SQL        Ask a question, get a SQL query")
+    console.print("  [bold]2[/bold]  SQL → English   Paste a query, get a plain-English explanation")
+    console.print()
     mode_choice = Prompt.ask(
-        "  What would you like to do?",
+        "  Select mode",
         choices=["1", "2"],
         default="1",
-        show_choices=False,
-        show_default=False,
     )
-    console.print("  [dim]1 = NL → SQL    2 = SQL → Plain English[/dim]\n")
 
     nl_input: str | None = None
     sql_input: str | None = None
@@ -186,12 +186,15 @@ async def main() -> None:
     # ── Approval gate (only when risk is high) ────────────────────────────────
     if approval_id:
         _show_approval_panel(state)
+        console.print("  [bold]a[/bold]  Approve rewrite   Accept the safer version")
+        console.print("  [bold]r[/bold]  Reject            Keep the original SQL as-is")
+        console.print("  [bold]m[/bold]  Modify            Edit the SQL yourself")
+        console.print()
         decision_choice = Prompt.ask(
             "  Decision",
             choices=["a", "r", "m"],
             default="a",
         )
-        console.print("  [dim]a = approve rewrite    r = reject (keep original)    m = modify[/dim]\n")
         modified_sql: str | None = None
         if decision_choice == "m":
             modified_sql = _get_multiline("  Enter your modified SQL")
